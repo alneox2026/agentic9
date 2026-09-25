@@ -339,11 +339,9 @@ class GeminiManagedClient:
             "stream": stream,
             "agent_config": agent_config_payload,
         }
-        if agent_config.max_output_tokens is not None:
-            agent_config_payload["max_output_tokens"] = agent_config.max_output_tokens
-            payload["generation_config"] = {
-                "max_output_tokens": agent_config.max_output_tokens,
-            }
+        # Antigravity rejects generation_config (including max_output_tokens).
+        # max_output_tokens remains available to other backends; this managed
+        # request is bounded by the supported max_total_tokens setting above.
 
         # Thread continuation: preserve state, files, and workspace
         if previous_interaction_id:

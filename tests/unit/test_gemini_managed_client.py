@@ -57,8 +57,8 @@ async def test_build_interaction_payload(managed_agent_config: AgentConfig):
     assert payload["stream"] is True
     assert payload["agent_config"]["model"] == "gemini-3.8-flash"
     assert payload["agent_config"]["max_total_tokens"] == 50000
-    assert payload["generation_config"] == {"max_output_tokens": 8192}
-    assert payload["agent_config"]["max_output_tokens"] == 8192
+    assert "generation_config" not in payload
+    assert "max_output_tokens" not in payload["agent_config"]
     assert payload["previous_interaction_id"] == "interactions/prev_123"
     assert payload["environment"] == "environments/env_456"
 
@@ -267,4 +267,3 @@ async def test_send_request_raises_connect_timeout_with_tag():
     err = exc_info.value
     assert err.code == "managed_agent_connect_timeout"
     assert err.details.get("timeout_type") == "connect"
-
